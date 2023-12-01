@@ -1,17 +1,27 @@
 fun main() {
-    fun part1(input: List<String>): Int {
-        return input.size
-    }
+    fun part1(input: Sequence<String>): Int = input
+        .map { line ->
 
-    fun part2(input: List<String>): Int {
-        return input.size
+            val number = charArrayOf(Char.MIN_VALUE, Char.MIN_VALUE)
+
+            for (c in line) {
+                if (!c.isDigit()) continue
+
+                if (number[0] == Char.MIN_VALUE) number[0] = c
+                number[1] = c
+            }
+
+            number.concatToString().toInt()
+        }
+        .sum()
+
+    fun part2(input: Sequence<String>): Int {
+        return input.minOf(String::length)
     }
 
     // test if implementation meets criteria from the description, like:
-    val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
+    check(useInput("Day01_test", ::part1) == 142)
 
-    val input = readInput("Day01")
-    part1(input).println()
-    part2(input).println()
+    useInput("Day01", ::part1).println()
+    useInput("Day01", ::part2).println()
 }
